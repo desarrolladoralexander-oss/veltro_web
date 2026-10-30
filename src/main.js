@@ -1,86 +1,86 @@
-import { createWhatsAppUrl } from "./quote.js";
+import { crearUrlWhatsApp } from "./quote.js";
 
-const menuToggle = document.querySelector(".menu-toggle");
-const mainNav = document.querySelector("#main-nav");
+const botonMenu = document.querySelector(".boton-menu");
+const navegacionPrincipal = document.querySelector("#navegacion-principal");
 
-for (const link of document.querySelectorAll("[data-quote-service]")) {
-  link.href = createWhatsAppUrl(link.dataset.quoteService);
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
+for (const enlace of document.querySelectorAll("[data-servicio-cotizacion]")) {
+  enlace.href = crearUrlWhatsApp(enlace.dataset.servicioCotizacion);
+  enlace.target = "_blank";
+  enlace.rel = "noopener noreferrer";
 }
 
-const gallery = document.querySelector(".results-grid");
-const galleryExamples = [
-  { service: "Lavado de comedores y sillas", title: "Comedores y sillas", image: "photo-1617806118233-18e1de247200", alt: "Sillas de comedor" },
-  { service: "Lavado de tapetes", title: "Lavado de tapetes", image: "photo-1600166898405-da9535204843", alt: "Tapete" },
-  { service: "Lavado de cojinería de carros", title: "Cojinería de carros", image: "photo-1507136566006-cfc505b114fc", alt: "Asientos de automóvil" },
-  { service: "Lavado de fachadas", title: "Lavado de fachadas", image: "photo-1487958449943-2429e8be8625", alt: "Fachada de edificio" },
+const galeriaResultados = document.querySelector(".rejilla-resultados");
+const ejemplosGaleria = [
+  { servicio: "Lavado de comedores y sillas", titulo: "Comedores y sillas", imagen: "photo-1617806118233-18e1de247200", textoAlternativo: "Sillas de comedor" },
+  { servicio: "Lavado de tapetes", titulo: "Lavado de tapetes", imagen: "photo-1600166898405-da9535204843", textoAlternativo: "Tapete" },
+  { servicio: "Lavado de cojinería de carros", titulo: "Cojinería de carros", imagen: "photo-1507136566006-cfc505b114fc", textoAlternativo: "Asientos de automóvil" },
+  { servicio: "Lavado de fachadas", titulo: "Lavado de fachadas", imagen: "photo-1487958449943-2429e8be8625", textoAlternativo: "Fachada de edificio" },
 ];
 
-for (const example of galleryExamples) {
-  const imageUrl = `https://images.unsplash.com/${example.image}?auto=format&fit=crop&w=1000&q=85`;
-  const card = document.createElement("article");
-  card.className = "result-card";
-  card.dataset.resultServices = example.service;
-  card.innerHTML = `<div class="comparison"><img class="comparison-after" src="${imageUrl}&sat=18" alt="${example.alt} después del lavado" /><div class="comparison-before"><img src="${imageUrl}&sat=-70" alt="${example.alt} antes del lavado" /></div><span class="comparison-label label-before">Antes</span><span class="comparison-label label-after">Después</span><input class="comparison-range" type="range" min="0" max="100" value="50" aria-label="Comparar ${example.title} antes y después" /><span class="comparison-handle" aria-hidden="true">↔</span></div><h3>${example.title}</h3><a class="result-quote" href="https://wa.me/573112337811" data-quote-service="${example.service}" target="_blank" rel="noopener noreferrer">Cotizar este servicio <span aria-hidden="true">↗</span></a>`;
-  gallery.append(card);
+for (const ejemplo of ejemplosGaleria) {
+  const urlImagen = `https://images.unsplash.com/${ejemplo.imagen}?auto=format&fit=crop&w=1000&q=85`;
+  const tarjeta = document.createElement("article");
+  tarjeta.className = "tarjeta-resultado";
+  tarjeta.dataset.serviciosResultado = ejemplo.servicio;
+  tarjeta.innerHTML = `<div class="comparacion"><img class="comparacion-despues" src="${urlImagen}&sat=18" alt="${ejemplo.textoAlternativo} después del lavado" /><div class="comparacion-antes"><img src="${urlImagen}&sat=-70" alt="${ejemplo.textoAlternativo} antes del lavado" /></div><span class="etiqueta-comparacion etiqueta-antes">Antes</span><span class="etiqueta-comparacion etiqueta-despues">Después</span><input class="control-comparacion" type="range" min="0" max="100" value="50" aria-label="Comparar ${ejemplo.titulo} antes y después" /><span class="indicador-comparacion" aria-hidden="true">↔</span></div><h3>${ejemplo.titulo}</h3><a class="cotizar-resultado" href="https://wa.me/573112337811" data-servicio-cotizacion="${ejemplo.servicio}" target="_blank" rel="noopener noreferrer">Cotizar este servicio <span aria-hidden="true">↗</span></a>`;
+  galeriaResultados.append(tarjeta);
 }
 
-const resultsTitle = document.querySelector("#results-title");
-const resultsDescription = document.querySelector("#results-description");
-const resultsReset = document.querySelector(".results-reset");
+const tituloResultados = document.querySelector("#titulo-resultados");
+const descripcionResultados = document.querySelector("#descripcion-resultados");
+const botonRestablecerResultados = document.querySelector(".restablecer-resultados");
 
-function filterResults(services) {
-  const selected = new Set(services);
-  let visibleCount = 0;
-  for (const card of gallery.querySelectorAll(".result-card")) {
-    const cardServices = card.dataset.resultServices.split("|");
-    const isVisible = cardServices.some((service) => selected.has(service));
-    card.hidden = !isVisible;
-    if (isVisible) visibleCount += 1;
+function filtrarResultados(servicios) {
+  const serviciosSeleccionados = new Set(servicios);
+  let cantidadVisible = 0;
+  for (const tarjeta of galeriaResultados.querySelectorAll(".tarjeta-resultado")) {
+    const serviciosTarjeta = tarjeta.dataset.serviciosResultado.split("|");
+    const estaVisible = serviciosTarjeta.some((servicio) => serviciosSeleccionados.has(servicio));
+    tarjeta.hidden = !estaVisible;
+    if (estaVisible) cantidadVisible += 1;
   }
-  const label = services.join(" y ");
-  resultsTitle.textContent = `Antes y después: ${label}`;
-  resultsDescription.textContent = `${visibleCount} resultado${visibleCount === 1 ? "" : "s"} de este servicio.`;
-  resultsReset.hidden = false;
+  const etiqueta = servicios.join(" y ");
+  tituloResultados.textContent = `Antes y después: ${etiqueta}`;
+  descripcionResultados.textContent = `${cantidadVisible} resultado${cantidadVisible === 1 ? "" : "s"} de este servicio.`;
+  botonRestablecerResultados.hidden = false;
 }
 
-for (const link of document.querySelectorAll("[data-gallery-service], [data-gallery-services]")) {
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-    const services = link.dataset.galleryServices?.split("|") ?? [link.dataset.galleryService];
-    filterResults(services);
+for (const enlace of document.querySelectorAll("[data-servicio-galeria], [data-servicios-galeria]")) {
+  enlace.addEventListener("click", (evento) => {
+    evento.preventDefault();
+    const servicios = enlace.dataset.serviciosGaleria?.split("|") ?? [enlace.dataset.servicioGaleria];
+    filtrarResultados(servicios);
     document.querySelector("#resultados").scrollIntoView({ behavior: "smooth" });
   });
 }
 
-resultsReset.addEventListener("click", () => {
-  for (const card of gallery.querySelectorAll(".result-card")) card.hidden = false;
-  resultsTitle.textContent = "Resultados que se notan";
-  resultsDescription.textContent = "Desliza cada control para comparar el antes y el después.";
-  resultsReset.hidden = true;
+botonRestablecerResultados.addEventListener("click", () => {
+  for (const tarjeta of galeriaResultados.querySelectorAll(".tarjeta-resultado")) tarjeta.hidden = false;
+  tituloResultados.textContent = "Resultados que se notan";
+  descripcionResultados.textContent = "Desliza cada control para comparar el antes y el después.";
+  botonRestablecerResultados.hidden = true;
 });
 
-for (const comparison of document.querySelectorAll(".comparison")) {
-  const range = comparison.querySelector(".comparison-range");
-  const before = comparison.querySelector(".comparison-before");
-  const handle = comparison.querySelector(".comparison-handle");
-  range.addEventListener("input", () => {
-    before.style.clipPath = `inset(0 ${100 - range.value}% 0 0)`;
-    handle.style.left = `${range.value}%`;
+for (const comparacion of document.querySelectorAll(".comparacion")) {
+  const controlComparacion = comparacion.querySelector(".control-comparacion");
+  const capaAntes = comparacion.querySelector(".comparacion-antes");
+  const indicadorComparacion = comparacion.querySelector(".indicador-comparacion");
+  controlComparacion.addEventListener("input", () => {
+    capaAntes.style.clipPath = `inset(0 ${100 - controlComparacion.value}% 0 0)`;
+    indicadorComparacion.style.left = `${controlComparacion.value}%`;
   });
 }
 
-menuToggle.addEventListener("click", () => {
-  const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
-  menuToggle.setAttribute("aria-expanded", String(!isOpen));
-  menuToggle.setAttribute("aria-label", isOpen ? "Abrir menú" : "Cerrar menú");
-  mainNav.classList.toggle("is-open", !isOpen);
+botonMenu.addEventListener("click", () => {
+  const menuAbierto = botonMenu.getAttribute("aria-expanded") === "true";
+  botonMenu.setAttribute("aria-expanded", String(!menuAbierto));
+  botonMenu.setAttribute("aria-label", menuAbierto ? "Abrir menú" : "Cerrar menú");
+  navegacionPrincipal.classList.toggle("esta-abierto", !menuAbierto);
 });
-mainNav.addEventListener("click", (event) => {
-  if (event.target.closest("a")) {
-    menuToggle.setAttribute("aria-expanded", "false");
-    menuToggle.setAttribute("aria-label", "Abrir menú");
-    mainNav.classList.remove("is-open");
+navegacionPrincipal.addEventListener("click", (evento) => {
+  if (evento.target.closest("a")) {
+    botonMenu.setAttribute("aria-expanded", "false");
+    botonMenu.setAttribute("aria-label", "Abrir menú");
+    navegacionPrincipal.classList.remove("esta-abierto");
   }
 });
