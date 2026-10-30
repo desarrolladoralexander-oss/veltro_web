@@ -44,12 +44,13 @@
       </section>
 
       <section class="seccion-resultados contenedor-seccion" id="resultados">
-        <div class="encabezado-seccion"><div><p class="sobretitulo sobretitulo-oscuro">CAMBIOS QUE SE PUEDEN VER</p><h2 id="titulo-resultados">Resultados que se notan</h2></div><div class="acciones-encabezado-resultados"><p id="descripcion-resultados">Desliza cada control para comparar el antes y el después.</p><button class="restablecer-resultados" type="button" hidden>Ver todos</button></div></div>
+        <div class="encabezado-seccion"><div><p class="sobretitulo sobretitulo-oscuro">CAMBIOS QUE SE PUEDEN VER</p><h2 id="titulo-resultados">Resultados que se notan</h2></div><div class="acciones-encabezado-resultados"><p id="descripcion-resultados">Mira nuestros trabajos de antes y después.</p><button class="restablecer-resultados" type="button" hidden>Ver todos</button></div></div>
         <div class="rejilla-resultados">
           <article class="tarjeta-resultado" data-servicios-resultado="Lavado de muebles"><div class="comparacion" style="--imagen-antes:url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=85');--imagen-despues:url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=85&sat=18')"><img class="comparacion-despues" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=85&sat=18" alt="Sofá limpio después del lavado" /><div class="comparacion-antes"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=85&sat=-70" alt="Sofá antes del lavado" /></div><span class="etiqueta-comparacion etiqueta-antes">Antes</span><span class="etiqueta-comparacion etiqueta-despues">Después</span><input class="control-comparacion" type="range" min="0" max="100" value="50" aria-label="Comparar sofá antes y después" /><span class="indicador-comparacion" aria-hidden="true">↔</span><button class="boton-ampliar-galeria" type="button" aria-label="Ampliar imágenes comparativas de lavado de muebles">Ampliar</button></div><h3>Lavado de muebles</h3><a class="cotizar-resultado" href="https://wa.me/573112337811" data-servicio-cotizacion="Lavado de muebles" target="_blank" rel="noopener noreferrer">Cotizar este servicio <span aria-hidden="true">↗</span></a></article>
           <article class="tarjeta-resultado" data-servicios-resultado="Lavado de colchones"><div class="comparacion" style="--imagen-antes:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=85');--imagen-despues:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=85&sat=18')"><img class="comparacion-despues" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=85&sat=18" alt="Colchón limpio después del lavado" /><div class="comparacion-antes"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=85&sat=-70" alt="Colchón antes del lavado" /></div><span class="etiqueta-comparacion etiqueta-antes">Antes</span><span class="etiqueta-comparacion etiqueta-despues">Después</span><input class="control-comparacion" type="range" min="0" max="100" value="50" aria-label="Comparar colchón antes y después" /><span class="indicador-comparacion" aria-hidden="true">↔</span><button class="boton-ampliar-galeria" type="button" aria-label="Ampliar imágenes comparativas de lavado de colchones">Ampliar</button></div><h3>Lavado de colchones</h3><a class="cotizar-resultado" href="https://wa.me/573112337811" data-servicio-cotizacion="Lavado de colchones" target="_blank" rel="noopener noreferrer">Cotizar este servicio <span aria-hidden="true">↗</span></a></article>
           <article class="tarjeta-resultado" data-servicios-resultado="Lavado de alfombras|Lavado de tapetes"><div class="comparacion" style="--imagen-antes:url('https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=1000&q=85');--imagen-despues:url('https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=1000&q=85&sat=18')"><img class="comparacion-despues" src="https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=1000&q=85&sat=18" alt="Alfombra limpia después del lavado" /><div class="comparacion-antes"><img src="https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=1000&q=85&sat=-70" alt="Alfombra antes del lavado" /></div><span class="etiqueta-comparacion etiqueta-antes">Antes</span><span class="etiqueta-comparacion etiqueta-despues">Después</span><input class="control-comparacion" type="range" min="0" max="100" value="50" aria-label="Comparar alfombra antes y después" /><span class="indicador-comparacion" aria-hidden="true">↔</span><button class="boton-ampliar-galeria" type="button" aria-label="Ampliar imágenes comparativas de lavado de alfombras y tapetes">Ampliar</button></div><h3>Lavado de alfombras y tapetes</h3><a class="cotizar-resultado" href="https://wa.me/573112337811" data-servicio-cotizacion="Lavado de alfombras" target="_blank" rel="noopener noreferrer">Cotizar este servicio <span aria-hidden="true">↗</span></a></article>
         </div>
+        <div class="resultados-vacios" id="resultados-vacios" hidden><p>Aún no tenemos fotos de este servicio. Escríbenos para cotizarlo.</p><a class="boton boton-verde" href="https://wa.me/573112337811" target="_blank" rel="noopener noreferrer">Cotizar por WhatsApp ↗</a></div>
       </section>
 
       <dialog class="visor-galeria" aria-labelledby="titulo-visor-galeria">
@@ -64,7 +65,7 @@
           <p class="contador-visor-galeria" aria-live="polite"></p>
           <div class="escenario-visor-galeria">
             <div class="comparacion-ampliada">
-              <div class="espacio-imagen-ampliada espacio-antes">
+              <div class="espacio-imagen-ampliada espacio-antes" hidden>
                 <img alt="" />
                 <span>Foto del antes pendiente</span>
                 <strong>Antes</strong>
@@ -72,7 +73,7 @@
               <div class="espacio-imagen-ampliada espacio-despues">
                 <img alt="" />
                 <span>Foto del después pendiente</span>
-                <strong>Después</strong>
+                <strong>Antes y después</strong>
               </div>
             </div>
             <button class="boton-navegacion-galeria boton-anterior-galeria" type="button" aria-label="Ver imagen comparativa anterior">‹</button>

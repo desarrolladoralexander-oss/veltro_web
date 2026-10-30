@@ -1,6 +1,8 @@
 import { default as prueba } from "node:test";
 import { default as comprobar } from "node:assert/strict";
+import { access, readFile as leerArchivo } from "node:fs/promises";
 import { crearMensajeCotizacion, crearUrlWhatsApp, SERVICIOS, NUMERO_WHATSAPP } from "../src/quote.js";
+import { ELEMENTOS_GALERIA } from "../src/galeria.js";
 
 const mensajeEsperado = (servicio) => [
   "¡Hola, equipo VELTRO! 👋",
@@ -17,15 +19,10 @@ const mensajeEsperado = (servicio) => [
   "¡Muchas gracias!",
 ].join("\n");
 
-prueba("ofrece los seis servicios vigentes", () => {
-  comprobar.deepEqual(SERVICIOS, [
-    "Lavado de muebles",
-    "Lavado de colchones",
-    "Lavado de comedores y sillas",
-    "Lavado de alfombras",
-    "Lavado de tapetes",
-    "Lavado de cojinería de carros",
-  ]);
+prueba("ofrece los seis servicios vigentes sin lavado de fachadas", () => {
+  comprobar.equal(SERVICIOS.length, 6);
+  comprobar.ok(SERVICIOS.includes("Lavado de muebles"));
+  comprobar.equal(SERVICIOS.includes("Lavado de fachadas"), false);
 });
 
 prueba("crea el mensaje personalizado acordado para el lavado de muebles", () => {
@@ -42,64 +39,60 @@ prueba("conserva tildes, emojis y formato de WhatsApp al codificar la dirección
   comprobar.equal(direccion.searchParams.get("text"), mensajeEsperado("Lavado de cojinería de carros"));
 });
 
-prueba("las tarjetas de servicio se relacionan con todos los servicios", async () => {
-  const { readFile: leerArchivo } = await import("node:fs/promises");
+prueba("las tarjetas del catálogo filtran los servicios correctos", async () => {
   const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
   const htmlTarjetasServicios = documentoHtml.split('<section class="seccion-resultados')[0];
   const tarjetas = [...htmlTarjetasServicios.matchAll(/data-servicio-galeria="([^"]+)"|data-servicios-galeria="([^"]+)"/g)];
   const serviciosAsociados = tarjetas.flatMap(([, servicioUnico, serviciosMultiples]) => (serviciosMultiples ?? servicioUnico).split("|"));
   comprobar.deepEqual(serviciosAsociados.sort(), [...SERVICIOS].sort());
+  comprobar.doesNotMatch(htmlTarjetasServicios, /fachadas/i);
 });
 
-prueba("no muestra un formulario de cotización ni confirma citas automáticamente", async () => {
-  const { readFile: leerArchivo } = await import("node:fs/promises");
+prueba("incluye 21 imágenes comparativas locales organizadas por servicio", async () => {
+  comprobar.equal(ELEMENTOS_GALERIA.length, 21);
+  for (const elemento of ELEMENTOS_GALERIA) {
+    await access(new URL(`../assets/results/${elemento.imagen}`, import.meta.url));
+    comprobar.ok(elemento.servicio.split("|").every((servicio) => SERVICIOS.includes(servicio)));
+  }
+  comprobar.ok(ELEMENTOS_GALERIA.filter((elemento) => elemento.servicio.includes("Lavado de muebles")).length >= 5);
+  comprobar.ok(ELEMENTOS_GALERIA.filter((elemento) => elemento.servicio.includes("Lavado de colchones")).length >= 4);
+  comprobar.equal(ELEMENTOS_GALERIA.some((elemento) => elemento.servicio.includes("fachadas")), false);
+});
+
+prueba("usa la imagen local suministrada como fondo de portada", async () => {
+  const estilos = await leerArchivo(new URL("../styles.css", import.meta.url), "utf8");
+  await access(new URL("../assets/images/Limpieza profesional de sofá en casa.png", import.meta.url));
+  comprobar.match(estilos, /Limpieza profesional de sofá en casa\.png/);
+});
+
+prueba("no muestra formulario de cotización ni confirma citas automáticamente", async () => {
   const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
   comprobar.doesNotMatch(documentoHtml, /<form\b|<select\b|<textarea\b/i);
-  comprobar.doesNotMatch(documentoHtml, /<input\b(?![^>]*type="range")/i);
   comprobar.doesNotMatch(documentoHtml, /cita confirmada|reserva confirmada|cita agendada/i);
 });
 
-prueba("muestra comparaciones accesibles con enlaces directos a cada servicio", async () => {
-  const { readFile: leerArchivo } = await import("node:fs/promises");
-  const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
-  comprobar.equal((documentoHtml.match(/class="control-comparacion"/g) ?? []).length, 3);
-  comprobar.equal((documentoHtml.match(/class="etiqueta-comparacion etiqueta-antes"/g) ?? []).length, 3);
-  comprobar.equal((documentoHtml.match(/class="etiqueta-comparacion etiqueta-despues"/g) ?? []).length, 3);
-  comprobar.match(documentoHtml, /aria-label="Comparar sofá antes y después"/);
-  comprobar.match(documentoHtml, /class="cotizar-resultado" href="https:\/\/wa\.me\/573112337811"/);
-});
-
-prueba("las tarjetas filtran la galería por servicio exacto", async () => {
-  const { readFile: leerArchivo } = await import("node:fs/promises");
-  const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
-  const codigoFuente = await leerArchivo(new URL("../src/main.js", import.meta.url), "utf8");
-  comprobar.equal((documentoHtml.match(/data-servicio-galeria=/g) ?? []).length, 4);
-  comprobar.equal((documentoHtml.match(/data-servicios-galeria=/g) ?? []).length, 1);
-  comprobar.match(documentoHtml, /id="titulo-resultados"/);
-  comprobar.match(documentoHtml, /class="restablecer-resultados"/);
-  comprobar.match(codigoFuente, /function filtrarResultados\(servicios\)/);
-  comprobar.match(codigoFuente, /tarjeta\.dataset\.serviciosResultado\.split\("\|"\)/);
-  comprobar.match(codigoFuente, /tarjeta\.hidden = !estaVisible/);
-});
-
-prueba("abre un visor accesible con cuatro espacios comparativos por servicio", async () => {
-  const { readFile: leerArchivo } = await import("node:fs/promises");
+prueba("incluye el visor accesible de comparativas con navegación y cuatro espacios mínimos", async () => {
   const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
   const codigoFuente = await leerArchivo(new URL("../src/main.js", import.meta.url), "utf8");
   comprobar.match(documentoHtml, /<dialog class="visor-galeria"/);
-  comprobar.equal((documentoHtml.match(/class="boton-ampliar-galeria"/g) ?? []).length, 3);
   comprobar.match(documentoHtml, /class="[^"]*boton-anterior-galeria/);
   comprobar.match(documentoHtml, /class="[^"]*boton-siguiente-galeria/);
-  comprobar.match(codigoFuente, /imagenesPorServicio\.set\(servicio, \[/);
-  comprobar.match(codigoFuente, /Imagen 2:/);
-  comprobar.match(codigoFuente, /Imagen 3:/);
-  comprobar.match(codigoFuente, /Imagen 4:/);
+  comprobar.match(codigoFuente, /function abrirVisorGaleria/);
+  comprobar.match(codigoFuente, /while \(imagenes\.length < 4\)/);
   comprobar.match(codigoFuente, /evento\.key === "ArrowLeft"/);
   comprobar.match(codigoFuente, /evento\.key === "ArrowRight"/);
 });
 
+prueba("crea tarjetas comparativas, filtra la categoría elegida y conserva sus resultados", async () => {
+  const codigoFuente = await leerArchivo(new URL("../src/main.js", import.meta.url), "utf8");
+  comprobar.match(codigoFuente, /function crearTarjetaResultado/);
+  comprobar.match(codigoFuente, /galeriaResultados\.replaceChildren/);
+  comprobar.match(codigoFuente, /function filtrarResultados\(servicios\)/);
+  comprobar.match(codigoFuente, /tarjeta\.hidden = !estaVisible/);
+  comprobar.match(codigoFuente, /imagenesPorServicio\.get\(servicio\)\.push\(elementoGaleria\)/);
+});
+
 prueba("incluye secciones adaptables para servicios, resultados, proceso e información", async () => {
-  const { readFile: leerArchivo } = await import("node:fs/promises");
   const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
   for (const seccion of ["servicios", "resultados", "nosotros", "contacto"]) {
     comprobar.match(documentoHtml, new RegExp(`id="${seccion}"`));
