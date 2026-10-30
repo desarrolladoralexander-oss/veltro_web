@@ -1017,32 +1017,81 @@ textarea {
 .servicio-vista:focus-visible{outline:3px solid var(--verde-azulado);outline-offset:-3px;border-radius:12px}
 .servicio-vista:hover .imagen-servicio{filter:brightness(.94)}
 .tarjeta-servicio .enlace-servicio{display:none}
-/* Guía de cotización inspirada en la referencia visual */
-.seccion-cotizacion{width:100%;max-width:none;margin:0;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(250px,.85fr);align-items:center;gap:clamp(32px,7vw,100px);padding:clamp(34px,5vw,62px) max(calc((100vw - 1120px)/2),clamp(24px,7vw,90px));background:#e5f5ef;border-radius:0}
-.guia-whatsapp{width:100%;min-width:0;max-width:600px}
-.guia-whatsapp .sobretitulo{margin-bottom:8px;color:#087e78;font-size:10px}
-.guia-whatsapp h2{max-width:19ch;margin:0;color:#102f3a;font:800 clamp(25px,3vw,36px)/1.08 Manrope,sans-serif;letter-spacing:-1.1px}
-.pasos-whatsapp{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:22px 0 18px}
-.paso-whatsapp{position:relative;display:grid;justify-items:center;grid-template-columns:1fr;gap:8px;flex:1;min-width:0;text-align:center}
-.numero-paso{position:absolute;top:0;left:calc(50% - 34px);z-index:1;display:grid;place-items:center;width:22px;height:22px;border:2px solid #e5f5ef;border-radius:50%;background:#078b57;color:#fff;font-size:11px;font-weight:800}
-.icono-paso{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:#fff;color:#078b57}
-.icono-foto::before{content:"";width:21px;height:16px;border:2px solid currentColor;border-radius:3px;background:radial-gradient(circle at 70% 35%,currentColor 0 2px,transparent 3px),linear-gradient(140deg,transparent 48%,currentColor 50% 55%,transparent 57%)}
-.icono-mensaje::before{content:"";width:21px;height:16px;border:2px solid currentColor;border-radius:6px}.icono-mensaje::after{content:"";position:absolute;margin:15px 0 0 -12px;width:6px;height:6px;border-left:2px solid currentColor;transform:skew(-25deg)}
-.icono-listo::before{content:"✓";display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#079a62;color:#fff;font-size:18px;font-weight:700}
-.paso-whatsapp p{margin:0;color:#173943;font-size:12px;line-height:1.35;font-weight:600}
-.separador-pasos{padding-top:19px;color:#6cae98;font-size:16px}
-.zona-servicio{margin:14px 0 0;padding:0;border:0;font-size:11px!important;color:#446266}
-.boton-guia-whatsapp{margin-top:16px;min-height:46px;padding-inline:18px;font-size:12px}
-.telefono-whatsapp{position:relative;justify-self:center;width:min(100%,270px);min-height:300px;padding:30px 10px 12px;border:7px solid #26383b;border-radius:32px;background:#102f3a;box-shadow:0 15px 28px #173e3426}
-.telefono-camara{position:absolute;top:9px;left:50%;width:44px;height:5px;border-radius:5px;background:#071719;transform:translateX(-50%)}
-.encabezado-chat{display:flex;align-items:center;gap:9px;padding:10px 9px;border-radius:18px 18px 0 0;background:#087e78;color:#fff}
-.avatar-chat{display:grid;place-items:center;width:31px;height:31px;border-radius:50%;background:#e6f5ed;color:#087e78;font-weight:800}
-.encabezado-chat strong,.encabezado-chat small{display:block}.encabezado-chat strong{font-size:12px}.encabezado-chat small{margin-top:2px;color:#d4f0e6;font-size:9px}
-.menu-chat{margin-left:auto;font-size:19px}
-.mensajes-chat{min-height:192px;padding:14px 9px 8px;background-color:#e9e4da;background-image:radial-gradient(#b9b0a333 .7px,transparent .7px);background-size:9px 9px}
-.mensajes-chat p{max-width:92%;margin:0;padding:9px 10px;border-radius:10px;font-size:10px;line-height:1.4;box-shadow:0 1px 2px #00000012}
-.mensaje-cliente{margin-left:auto!important;background:#d9f5d1;color:#173d31}.mensaje-empresa{margin-top:9px!important;background:#fff;color:#263d3d}
-.hora-mensaje{display:block;margin:3px 4px 5px;text-align:right;color:#71827e;font-size:8px}
-.pie-chat{display:flex;align-items:center;justify-content:space-between;margin-top:7px;padding:8px 10px;border-radius:18px;background:#fff;color:#788887;font-size:9px}.enviar-chat{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#078b57;color:#fff;font-size:11px}
-@media(max-width:900px){.seccion-cotizacion{grid-template-columns:minmax(0,1fr) minmax(220px,.75fr);gap:28px;padding-inline:32px}.telefono-whatsapp{width:min(100%,245px)}}
-@media(max-width:680px){.seccion-cotizacion{grid-template-columns:minmax(0,1fr);gap:26px;padding:36px 20px}.guia-whatsapp h2{max-width:22ch;font-size:29px}.pasos-whatsapp{gap:4px;margin:20px 0 16px}.icono-paso{width:46px;height:46px}.numero-paso{left:calc(50% - 30px);width:20px;height:20px}.paso-whatsapp p{font-size:10px}.separador-pasos{padding-top:15px}.telefono-whatsapp{width:min(78%,260px);min-height:280px}.mensajes-chat{min-height:165px}}
+/* Catálogo con cotización clara y fila guía/resultados como en la referencia */
+.tarjeta-servicio{display:flex;flex-direction:column;min-width:0}
+.servicio-vista{display:block;color:inherit;text-decoration:none;cursor:pointer}
+.servicio-vista:focus-visible{outline:3px solid var(--verde-azulado);outline-offset:-3px;border-radius:12px}
+.servicio-vista:hover .imagen-servicio{filter:brightness(.94)}
+.tarjeta-servicio .enlace-servicio{display:none}
+.informacion-servicio{flex:1}
+.cotizar-servicio{display:flex;align-items:center;justify-content:center;min-height:48px;margin:0 15px 15px;padding:10px 14px;border-radius:8px;background:var(--amarillo);color:var(--tinta);font-size:14px;font-weight:800;text-align:center;transition:background .2s,transform .2s}
+.cotizar-servicio:hover{background:#ffdc3b;transform:translateY(-1px)}
+.cotizar-servicio:focus-visible{outline:3px solid var(--verde-azulado);outline-offset:3px}
+.fila-cotizacion-resultados{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start;gap:20px;width:calc(100% - 48px);max-width:1260px;margin:28px auto;padding:0}
+.seccion-cotizacion{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 215px;align-items:center;gap:5px;min-width:0;min-height:250px;margin:0;padding:20px 18px;overflow:visible;border:0;border-radius:15px;background:#e4f5ee;box-sizing:border-box}
+.guia-whatsapp{min-width:0;max-width:none}
+.guia-whatsapp .sobretitulo{margin:0 0 5px;color:#087e78;font-size:9px;letter-spacing:1px}
+.guia-whatsapp h2{max-width:19ch;margin:0;color:#102f3a;font:800 clamp(20px,1.9vw,26px)/1.12 Manrope,sans-serif;letter-spacing:-.55px}
+.pasos-whatsapp{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin:15px 0 11px}
+.paso-whatsapp{position:relative;display:grid;justify-items:center;gap:5px;flex:1;min-width:0;text-align:center}
+.numero-paso{position:absolute;top:-3px;left:calc(50% - 27px);z-index:1;display:grid;place-items:center;width:18px;height:18px;border:2px solid #e4f5ee;border-radius:50%;background:#078b57;color:#fff;font-size:9px;font-weight:800}
+.icono-paso{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#fff;color:#078b57}
+.icono-foto svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icono-mensaje::before{content:"";width:18px;height:14px;border:2px solid currentColor;border-radius:5px}.icono-mensaje::after{content:"";position:absolute;margin:13px 0 0 -10px;width:5px;height:5px;border-left:2px solid currentColor;transform:skew(-25deg)}
+.icono-listo::before{content:"✓";display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#079a62;color:#fff;font-size:16px;font-weight:700}
+.paso-whatsapp p{margin:0;color:#173943;font-size:10px;line-height:1.3;font-weight:600}
+.separador-pasos{padding-top:15px;color:#6cae98;font-size:14px}
+.zona-servicio{margin:7px 0 0;padding:0;border:0;color:#446266;font-size:9px!important;line-height:1.4}
+.boton-guia-whatsapp{min-height:42px;margin-top:12px;padding:0 16px;border-radius:7px;background:var(--amarillo);color:var(--tinta);font-size:11px;white-space:nowrap}
+.boton-guia-whatsapp:hover{background:#ffdc3b}
+.imagen-telefono-guia{position:absolute;z-index:1;display:block;right:0;bottom:0;width:270px;height:260px;margin:0;object-fit:cover;object-position:55% 50%;border-radius:0 0 15px 0}
+.seccion-resultados{width:100%;max-width:none;min-width:0;margin:0;padding:0}
+.seccion-resultados .encabezado-seccion{align-items:center;gap:8px;margin-bottom:12px}
+.seccion-resultados .encabezado-seccion h2{font-size:clamp(19px,2vw,27px)}
+.seccion-resultados .encabezado-seccion .sobretitulo{display:none}
+.seccion-resultados .encabezado-seccion p{font-size:10px}
+.seccion-resultados .rejilla-resultados{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.seccion-resultados .comparacion{height:120px}
+.seccion-resultados .tarjeta-resultado h3{font-size:11px;margin:8px 9px 5px}
+.seccion-resultados .cotizar-resultado{font-size:10px;margin:0 9px 10px}
+.icono-listo svg{width:27px;height:27px}
+@media(max-width:1050px){.fila-cotizacion-resultados{grid-template-columns:minmax(0,1fr);max-width:760px}.seccion-cotizacion{grid-template-columns:minmax(0,1fr) 215px}.imagen-telefono-guia{width:270px;height:260px}.seccion-resultados .comparacion{height:180px}}
+@media(max-width:680px){.fila-cotizacion-resultados{width:calc(100% - 32px);gap:24px;margin:22px auto}.seccion-cotizacion{grid-template-columns:minmax(0,1fr) 145px;gap:4px;min-height:240px;padding:18px 12px;border-radius:12px}.guia-whatsapp .sobretitulo{font-size:8px}.guia-whatsapp h2{font-size:18px;max-width:18ch}.pasos-whatsapp{gap:2px;margin:12px 0 8px}.icono-paso{width:36px;height:36px}.numero-paso{left:calc(50% - 21px);width:16px;height:16px;font-size:8px}.paso-whatsapp p{font-size:8px}.separador-pasos{padding-top:10px;font-size:10px}.zona-servicio{font-size:8px!important}.boton-guia-whatsapp{min-height:34px;padding-inline:8px;font-size:8px}.imagen-telefono-guia{right:0;width:180px;height:190px;object-position:55% 50%}.seccion-resultados .encabezado-seccion{display:block}.seccion-resultados .encabezado-seccion h2{font-size:21px}.seccion-resultados .encabezado-seccion p{font-size:10px}.seccion-resultados .rejilla-resultados{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.seccion-resultados .comparacion{height:115px}}
+@media(max-width:370px){.seccion-cotizacion{grid-template-columns:minmax(0,1fr) 125px;padding:15px 9px}.imagen-telefono-guia{width:160px;height:175px}.guia-whatsapp h2{font-size:16px}.boton-guia-whatsapp{font-size:7px}}
+.icono-mensaje::before,.icono-mensaje::after{display:none}
+.icono-mensaje svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icono-mensaje svg path+path{fill:currentColor;stroke:none}
+.resaltado {
+  color: var(--verde-azulado);
+}
+#nosotros {
+  background: var(--profundo);
+  color: #fff;
+  max-width: none;
+  padding-left: max(calc((100vw - 1260px) / 2), 26px);
+  padding-right: max(calc((100vw - 1260px) / 2), 26px);
+}
+#nosotros h2,
+#nosotros .sobretitulo-oscuro {
+  color: #fff;
+}
+#nosotros .resaltado {
+  color: var(--amarillo);
+}
+#nosotros .encabezado-seccion > p {
+  color: #a8c6c9;
+}
+#nosotros .tarjeta-ventaja {
+  background: #0b4a5a;
+  border-color: #1d5e6e;
+}
+#nosotros .tarjeta-ventaja h3 {
+  color: #fff;
+}
+#nosotros .tarjeta-ventaja p {
+  color: #c4dcdc;
+}
+#nosotros .tarjeta-ventaja > span {
+  background: #0e5e6e;
+  color: var(--amarillo);
+}
