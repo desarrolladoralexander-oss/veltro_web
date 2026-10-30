@@ -1,21 +1,20 @@
-export const WHATSAPP_NUMBER = "573112337811";
+export const NUMERO_WHATSAPP = "573112337811";
 
-export const SERVICES = [
+export const SERVICIOS = [
   "Lavado de muebles",
   "Lavado de colchones",
   "Lavado de comedores y sillas",
   "Lavado de alfombras",
   "Lavado de tapetes",
   "Lavado de cojinería de carros",
-  "Lavado de fachadas",
 ];
 
-export function buildQuoteMessage(service) {
+export function crearMensajeCotizacion(servicio) {
   return [
     "¡Hola, equipo VELTRO! 👋",
     "Me gustaría solicitar una cotización personalizada para el siguiente servicio:",
     "",
-    `🧼 *Servicio:* ${service}`,
+    `🧼 *Servicio:* ${servicio}`,
     "📍 *Ubicación:* Por confirmar",
     "📏 *Cantidad o tamaño:* Por confirmar",
     "",
@@ -27,6 +26,6 @@ export function buildQuoteMessage(service) {
   ].join("\n");
 }
 
-export function createWhatsAppUrl(service) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildQuoteMessage(service))}`;
+export function crearUrlWhatsApp(servicio) {
+  return `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(crearMensajeCotizacion(servicio))}`;
 }

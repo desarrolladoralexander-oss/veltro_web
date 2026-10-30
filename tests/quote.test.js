@@ -1,59 +1,101 @@
-import test from "node:test";
-import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
-import { buildQuoteMessage, createWhatsAppUrl, SERVICES, WHATSAPP_NUMBER } from "../src/quote.js";
-import { GALLERY_ITEMS } from "../src/gallery.js";
+import { default as prueba } from "node:test";
+import { default as comprobar } from "node:assert/strict";
+import { access, readFile as leerArchivo } from "node:fs/promises";
+import { crearMensajeCotizacion, crearUrlWhatsApp, SERVICIOS, NUMERO_WHATSAPP } from "../src/quote.js";
+import { ELEMENTOS_GALERIA } from "../src/galeria.js";
 
-test("provides the seven requested services", () => {
-  assert.equal(SERVICES.length, 7);
-  assert.ok(SERVICES.includes("Lavado de muebles"));
-  assert.ok(SERVICES.includes("Lavado de fachadas"));
+const mensajeEsperado = (servicio) => [
+  "¡Hola, equipo VELTRO! 👋",
+  "Me gustaría solicitar una cotización personalizada para el siguiente servicio:",
+  "",
+  `🧼 *Servicio:* ${servicio}`,
+  "📍 *Ubicación:* Por confirmar",
+  "📏 *Cantidad o tamaño:* Por confirmar",
+  "",
+  "📸 Les compartiré fotografías para que puedan evaluar el trabajo y brindarme un presupuesto.",
+  "",
+  "Quedo atento(a) a la información y disponibilidad.",
+  "",
+  "¡Muchas gracias!",
+].join("\n");
+
+prueba("ofrece los seis servicios vigentes sin lavado de fachadas", () => {
+  comprobar.equal(SERVICIOS.length, 6);
+  comprobar.ok(SERVICIOS.includes("Lavado de muebles"));
+  comprobar.equal(SERVICIOS.includes("Lavado de fachadas"), false);
 });
 
-test("creates the agreed furniture quote message and requests photos", () => {
-  const message = buildQuoteMessage("Lavado de muebles");
-  assert.match(message, /\*Servicio:\* Lavado de muebles/);
-  assert.match(message, /\*Ubicaci\u00f3n:\* Por confirmar/);
-  assert.match(message, /\*Cantidad o tama\u00f1o:\* Por confirmar/);
-  assert.match(message, /fotograf\u00edas/);
+prueba("crea el mensaje personalizado acordado para el lavado de muebles", () => {
+  comprobar.equal(crearMensajeCotizacion("Lavado de muebles"), mensajeEsperado("Lavado de muebles"));
 });
 
-test("creates a correctly encoded WhatsApp link for the official phone", () => {
-  const url = new URL(createWhatsAppUrl("Lavado de muebles"));
-  assert.equal(url.origin + url.pathname, `https://wa.me/${WHATSAPP_NUMBER}`);
-  assert.equal(url.searchParams.get("text"), buildQuoteMessage("Lavado de muebles"));
+prueba("incluye el servicio elegido en el mensaje", () => {
+  for (const servicio of SERVICIOS) comprobar.match(crearMensajeCotizacion(servicio), new RegExp(servicio));
 });
 
-test("maps service cards to the selected gallery category", async () => {
-  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
-  const source = await readFile(new URL("../src/main.js", import.meta.url), "utf8");
-  const serviceCards = html.split('<section class="results-section')[0];
-  assert.equal((serviceCards.match(/data-gallery-service=/g) ?? []).length, 5);
-  assert.equal((serviceCards.match(/data-gallery-services=/g) ?? []).length, 1);
-  assert.match(source, /function filterResults\(services\)/);
-  assert.match(source, /card\.hidden = !isVisible/);
+prueba("conserva tildes, emojis y formato de WhatsApp al codificar la dirección", () => {
+  const direccion = new URL(crearUrlWhatsApp("Lavado de cojinería de carros"));
+  comprobar.equal(direccion.origin + direccion.pathname, `https://wa.me/${NUMERO_WHATSAPP}`);
+  comprobar.equal(direccion.searchParams.get("text"), mensajeEsperado("Lavado de cojinería de carros"));
 });
 
-test("contains optimized local before-and-after images for available services", async () => {
-  assert.equal(GALLERY_ITEMS.length, 21);
-  for (const item of GALLERY_ITEMS) await access(new URL(`../assets/results/${item.image}`, import.meta.url));
-  assert.ok(GALLERY_ITEMS.filter((item) => item.service.includes("Lavado de muebles")).length >= 5);
-  assert.ok(GALLERY_ITEMS.filter((item) => item.service.includes("Lavado de colchones")).length >= 3);
-  assert.ok(GALLERY_ITEMS.filter((item) => item.service.includes("Lavado de alfombras")).length >= 3);
-  assert.ok(GALLERY_ITEMS.filter((item) => item.service.includes("Lavado de cojinería de carros")).length >= 3);
-  assert.equal(GALLERY_ITEMS.some((item) => item.service.includes("Lavado de fachadas")), false);
+prueba("las tarjetas del catálogo filtran los servicios correctos", async () => {
+  const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
+  const htmlTarjetasServicios = documentoHtml.split('<section class="seccion-resultados')[0];
+  const tarjetas = [...htmlTarjetasServicios.matchAll(/data-servicio-galeria="([^"]+)"|data-servicios-galeria="([^"]+)"/g)];
+  const serviciosAsociados = tarjetas.flatMap(([, servicioUnico, serviciosMultiples]) => (serviciosMultiples ?? servicioUnico).split("|"));
+  comprobar.deepEqual(serviciosAsociados.sort(), [...SERVICIOS].sort());
+  comprobar.doesNotMatch(htmlTarjetasServicios, /fachadas/i);
 });
 
-test("does not show a quote form or automatically confirm appointments", async () => {
-  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
-  assert.doesNotMatch(html, /<form\b|<input\b|<select\b|<textarea\b/i);
-  assert.doesNotMatch(html, /cita confirmada|reserva confirmada|cita agendada/i);
+prueba("incluye 21 imágenes comparativas locales organizadas por servicio", async () => {
+  comprobar.equal(ELEMENTOS_GALERIA.length, 21);
+  for (const elemento of ELEMENTOS_GALERIA) {
+    await access(new URL(`../assets/results/${elemento.imagen}`, import.meta.url));
+    comprobar.ok(elemento.servicio.split("|").every((servicio) => SERVICIOS.includes(servicio)));
+  }
+  comprobar.ok(ELEMENTOS_GALERIA.filter((elemento) => elemento.servicio.includes("Lavado de muebles")).length >= 5);
+  comprobar.ok(ELEMENTOS_GALERIA.filter((elemento) => elemento.servicio.includes("Lavado de colchones")).length >= 4);
+  comprobar.equal(ELEMENTOS_GALERIA.some((elemento) => elemento.servicio.includes("fachadas")), false);
 });
 
-test("uses the supplied sofa-cleaning photo as the hero background", async () => {
-  const { readFile, access } = await import("node:fs/promises");
-  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
-  const imagePath = "../assets/images/Limpieza profesional de sofá en casa.png";
-  await access(new URL(imagePath, import.meta.url));
-  assert.match(css, /Limpieza profesional de sofá en casa\.png/);
+prueba("usa la imagen local suministrada como fondo de portada", async () => {
+  const estilos = await leerArchivo(new URL("../styles.css", import.meta.url), "utf8");
+  await access(new URL("../assets/images/Limpieza profesional de sofá en casa.png", import.meta.url));
+  comprobar.match(estilos, /Limpieza profesional de sofá en casa\.png/);
+});
+
+prueba("no muestra formulario de cotización ni confirma citas automáticamente", async () => {
+  const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
+  comprobar.doesNotMatch(documentoHtml, /<form\b|<select\b|<textarea\b/i);
+  comprobar.doesNotMatch(documentoHtml, /cita confirmada|reserva confirmada|cita agendada/i);
+});
+
+prueba("incluye el visor accesible de comparativas con navegación y cuatro espacios mínimos", async () => {
+  const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
+  const codigoFuente = await leerArchivo(new URL("../src/main.js", import.meta.url), "utf8");
+  comprobar.match(documentoHtml, /<dialog class="visor-galeria"/);
+  comprobar.match(documentoHtml, /class="[^"]*boton-anterior-galeria/);
+  comprobar.match(documentoHtml, /class="[^"]*boton-siguiente-galeria/);
+  comprobar.match(codigoFuente, /function abrirVisorGaleria/);
+  comprobar.match(codigoFuente, /while \(imagenes\.length < 4\)/);
+  comprobar.match(codigoFuente, /evento\.key === "ArrowLeft"/);
+  comprobar.match(codigoFuente, /evento\.key === "ArrowRight"/);
+});
+
+prueba("crea tarjetas comparativas, filtra la categoría elegida y conserva sus resultados", async () => {
+  const codigoFuente = await leerArchivo(new URL("../src/main.js", import.meta.url), "utf8");
+  comprobar.match(codigoFuente, /function crearTarjetaResultado/);
+  comprobar.match(codigoFuente, /galeriaResultados\.replaceChildren/);
+  comprobar.match(codigoFuente, /function filtrarResultados\(servicios\)/);
+  comprobar.match(codigoFuente, /tarjeta\.hidden = !estaVisible/);
+  comprobar.match(codigoFuente, /imagenesPorServicio\.get\(servicio\)\.push\(elementoGaleria\)/);
+});
+
+prueba("incluye secciones adaptables para servicios, resultados, proceso e información", async () => {
+  const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
+  for (const seccion of ["servicios", "resultados", "nosotros", "contacto"]) {
+    comprobar.match(documentoHtml, new RegExp(`id="${seccion}"`));
+    comprobar.match(documentoHtml, new RegExp(`href="#${seccion}"`));
+  }
 });
