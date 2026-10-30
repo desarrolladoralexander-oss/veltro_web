@@ -49,3 +49,11 @@ test("does not show a quote form or automatically confirm appointments", async (
   assert.doesNotMatch(html, /<form\b|<input\b|<select\b|<textarea\b/i);
   assert.doesNotMatch(html, /cita confirmada|reserva confirmada|cita agendada/i);
 });
+
+test("uses the supplied sofa-cleaning photo as the hero background", async () => {
+  const { readFile, access } = await import("node:fs/promises");
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+  const imagePath = "../assets/images/Limpieza profesional de sofá en casa.png";
+  await access(new URL(imagePath, import.meta.url));
+  assert.match(css, /Limpieza profesional de sofá en casa\.png/);
+});

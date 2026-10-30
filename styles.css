@@ -138,7 +138,7 @@ textarea {
   padding: 65px max(calc((100vw - 1260px) / 2), 7vw);
   color: #fff;
   background: #073b49
-    url("https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=2200&q=90")
+    url("assets/images/Limpieza profesional de sofá en casa.png")
     center 56% / cover no-repeat;
   isolation: isolate;
 }
