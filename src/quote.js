@@ -7,7 +7,6 @@ export const SERVICIOS = [
   "Lavado de alfombras",
   "Lavado de tapetes",
   "Lavado de cojinería de carros",
-  "Lavado de fachadas",
 ];
 
 export function crearMensajeCotizacion(servicio) {

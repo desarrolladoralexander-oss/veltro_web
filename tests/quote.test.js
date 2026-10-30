@@ -17,7 +17,7 @@ const mensajeEsperado = (servicio) => [
   "¡Muchas gracias!",
 ].join("\n");
 
-prueba("ofrece los siete servicios solicitados", () => {
+prueba("ofrece los seis servicios vigentes", () => {
   comprobar.deepEqual(SERVICIOS, [
     "Lavado de muebles",
     "Lavado de colchones",
@@ -25,7 +25,6 @@ prueba("ofrece los siete servicios solicitados", () => {
     "Lavado de alfombras",
     "Lavado de tapetes",
     "Lavado de cojinería de carros",
-    "Lavado de fachadas",
   ]);
 });
 
@@ -74,13 +73,29 @@ prueba("las tarjetas filtran la galería por servicio exacto", async () => {
   const { readFile: leerArchivo } = await import("node:fs/promises");
   const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
   const codigoFuente = await leerArchivo(new URL("../src/main.js", import.meta.url), "utf8");
-  comprobar.equal((documentoHtml.match(/data-servicio-galeria=/g) ?? []).length, 5);
+  comprobar.equal((documentoHtml.match(/data-servicio-galeria=/g) ?? []).length, 4);
   comprobar.equal((documentoHtml.match(/data-servicios-galeria=/g) ?? []).length, 1);
   comprobar.match(documentoHtml, /id="titulo-resultados"/);
   comprobar.match(documentoHtml, /class="restablecer-resultados"/);
   comprobar.match(codigoFuente, /function filtrarResultados\(servicios\)/);
   comprobar.match(codigoFuente, /tarjeta\.dataset\.serviciosResultado\.split\("\|"\)/);
   comprobar.match(codigoFuente, /tarjeta\.hidden = !estaVisible/);
+});
+
+prueba("abre un visor accesible con cuatro espacios comparativos por servicio", async () => {
+  const { readFile: leerArchivo } = await import("node:fs/promises");
+  const documentoHtml = await leerArchivo(new URL("../index.html", import.meta.url), "utf8");
+  const codigoFuente = await leerArchivo(new URL("../src/main.js", import.meta.url), "utf8");
+  comprobar.match(documentoHtml, /<dialog class="visor-galeria"/);
+  comprobar.equal((documentoHtml.match(/class="boton-ampliar-galeria"/g) ?? []).length, 3);
+  comprobar.match(documentoHtml, /class="[^"]*boton-anterior-galeria/);
+  comprobar.match(documentoHtml, /class="[^"]*boton-siguiente-galeria/);
+  comprobar.match(codigoFuente, /imagenesPorServicio\.set\(servicio, \[/);
+  comprobar.match(codigoFuente, /Imagen 2:/);
+  comprobar.match(codigoFuente, /Imagen 3:/);
+  comprobar.match(codigoFuente, /Imagen 4:/);
+  comprobar.match(codigoFuente, /evento\.key === "ArrowLeft"/);
+  comprobar.match(codigoFuente, /evento\.key === "ArrowRight"/);
 });
 
 prueba("incluye secciones adaptables para servicios, resultados, proceso e información", async () => {
