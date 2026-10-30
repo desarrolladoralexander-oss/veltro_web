@@ -1003,3 +1003,17 @@ textarea {
 .seccion-cotizacion{margin:0 auto;max-width:1260px;border-radius:18px}
 .quote-card-icon{display:none}
 @media(max-width:680px){.cotizar-servicio{min-height:46px;margin:0 9px 10px;padding:9px 7px;font-size:12px}.seccion-cotizacion{margin:0 12px;border-radius:14px}.seccion-cotizacion{grid-template-columns:1fr;gap:24px;padding:36px 19px}}
+
+/* Tarjetas seleccionables y distribución adaptable de la guía */
+.tarjeta-servicio{cursor:pointer;min-width:0}
+.tarjeta-servicio:focus-within{outline:3px solid var(--verde-azulado);outline-offset:3px}
+.enlace-servicio{width:auto;min-width:34px;padding:0 12px;border-radius:18px;font-size:12px;font-weight:700}
+.seccion-cotizacion{width:100%;max-width:none;box-sizing:border-box;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(24px,5vw,70px);padding:clamp(40px,6vw,74px) max(calc((100vw - 1130px)/2),clamp(24px,7vw,96px));border-radius:0}
+.introduccion-cotizacion,.tarjeta-cotizacion{width:100%;min-width:0;max-width:none}
+.introduccion-cotizacion h2{max-width:14ch;font-size:clamp(32px,4vw,49px);overflow-wrap:normal}
+.introduccion-cotizacion>p:not(.sobretitulo){max-width:58ch}
+@media(max-width:900px){.seccion-cotizacion{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:24px;padding-inline:32px}}
+@media(max-width:680px){.seccion-cotizacion{grid-template-columns:minmax(0,1fr);gap:24px;padding:38px 20px}.introduccion-cotizacion h2{max-width:16ch;font-size:clamp(32px,9vw,39px)}.pasos-cotizacion{align-items:flex-start;flex-wrap:wrap}.pasos-cotizacion>i{display:none}.pasos-cotizacion>div{flex:1 1 30%;align-items:flex-start;flex-direction:column;font-size:11px}}.servicio-vista{display:block;color:inherit;text-decoration:none;cursor:pointer}
+.servicio-vista:focus-visible{outline:3px solid var(--verde-azulado);outline-offset:-3px;border-radius:12px}
+.servicio-vista:hover .imagen-servicio{filter:brightness(.94)}
+.tarjeta-servicio .enlace-servicio{display:none}
