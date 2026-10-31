@@ -868,6 +868,32 @@ textarea {
     padding-bottom: 78px;
   }
 }
+.marca {
+  gap: 0;
+}
+.logo-veltro {
+  display: block;
+  flex: none;
+  width: clamp(170px, 16vw, 218px);
+  max-height: 72px;
+  object-fit: contain;
+  padding: 4px 8px;
+  border: 1px solid #dbe9e2;
+  border-radius: 10px;
+  background: var(--crema);
+  box-shadow: 0 3px 12px #001e2618;
+}
+.marca-pie .logo-veltro {
+  width: 188px;
+  max-height: 64px;
+}
+@media (max-width: 680px) {
+  .logo-veltro {
+    width: 174px;
+    max-height: 60px;
+    padding: 3px 7px;
+  }
+}
 
 .tarjeta-cotizacion {
   background: #fff;
