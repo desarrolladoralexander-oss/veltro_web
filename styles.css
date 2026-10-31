@@ -3,14 +3,16 @@
 :root {
   font-family: "DM Sans", sans-serif;
   color: #102f3a;
-  background: #f7f8f5;
+  background: #f7f5ef;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --tinta: #102f3a;
-  --profundo: #073b49;
+  --profundo: #0b2a33;
   --verde-azulado: #087e78;
-  --amarillo: #f5cc25;
-  --menta: #dff2e9;
+  --amarillo: #f5c518;
+  --acento-fresco: #5eead4;
+  --menta: #e5f7f1;
+  --crema: #f7f5ef;
   --atenuado: #6b7c80;
   --blanco: #fff;
 }
@@ -806,6 +808,66 @@ textarea {
     transition: none !important;
   }
 }
+@media (max-width: 680px) {
+  .whatsapp-movil {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+  }
+  .whatsapp-movil.visible-despues-portada:not(.oculta-por-pie) {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  .seccion-cotizacion {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .guia-whatsapp {
+    position: relative;
+    z-index: 1;
+  }
+  .pasos-whatsapp {
+    width: 100%;
+  }
+  .paso-whatsapp p {
+    font-size: 9px;
+  }
+  .imagen-telefono-guia {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    justify-self: end;
+    width: min(100%, 220px);
+    height: 175px;
+    margin-top: -12px;
+    object-position: center 48%;
+    border-radius: 10px;
+  }
+  .rejilla-ventajas .tarjeta-ventaja {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .rejilla-ventajas .tarjeta-ventaja > span {
+    flex: none;
+    margin-bottom: 9px;
+  }
+  .rejilla-ventajas .tarjeta-ventaja h3 {
+    margin: 0 0 5px;
+  }
+  .descripcion-visor-galeria {
+    margin-top: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .pie-sitio {
+    padding-bottom: 78px;
+  }
+}
 
 .tarjeta-cotizacion {
   background: #fff;
@@ -1019,12 +1081,12 @@ textarea {
 .tarjeta-servicio .enlace-servicio{display:none}
 /* Catálogo con cotización clara y fila guía/resultados como en la referencia */
 .tarjeta-servicio{display:flex;flex-direction:column;min-width:0}
-.servicio-vista{display:block;color:inherit;text-decoration:none;cursor:pointer}
+.servicio-vista{display:flex;flex:1;flex-direction:column;color:inherit;text-decoration:none;cursor:pointer}
 .servicio-vista:focus-visible{outline:3px solid var(--verde-azulado);outline-offset:-3px;border-radius:12px}
 .servicio-vista:hover .imagen-servicio{filter:brightness(.94)}
 .tarjeta-servicio .enlace-servicio{display:none}
 .informacion-servicio{flex:1}
-.cotizar-servicio{display:flex;align-items:center;justify-content:center;min-height:48px;margin:0 15px 15px;padding:10px 14px;border-radius:8px;background:var(--amarillo);color:var(--tinta);font-size:14px;font-weight:800;text-align:center;transition:background .2s,transform .2s}
+.cotizar-servicio{display:flex;align-items:center;justify-content:center;min-height:48px;margin:12px 15px 15px;padding:10px 14px;border-radius:8px;background:var(--amarillo);color:var(--tinta);font-size:14px;font-weight:800;text-align:center;transition:background .2s,transform .2s}
 .cotizar-servicio:hover{background:#ffdc3b;transform:translateY(-1px)}
 .cotizar-servicio:focus-visible{outline:3px solid var(--verde-azulado);outline-offset:3px}
 .fila-cotizacion-resultados{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start;gap:20px;width:calc(100% - 48px);max-width:1260px;margin:28px auto;padding:0}
@@ -1054,6 +1116,15 @@ textarea {
 .seccion-resultados .comparacion{height:120px}
 .seccion-resultados .tarjeta-resultado h3{font-size:11px;margin:8px 9px 5px}
 .seccion-resultados .cotizar-resultado{font-size:10px;margin:0 9px 10px}
+.servicio-vista .informacion-servicio{flex:1}
+.cotizar-servicio{margin-top:auto}
+.descripcion-visor-galeria{max-width:760px;margin:16px auto 0;padding:14px 18px;border-left:3px solid var(--acento-fresco);border-radius:0 10px 10px 0;background:#eaf6f1;color:#304a50;font-size:14px;line-height:1.65}
+.espacio-imagen-ampliada img{object-position:center}
+.tarjeta-ventaja{min-width:0}
+.tarjeta-ventaja h3{line-height:1.35}
+.tarjeta-ventaja p{line-height:1.65;overflow-wrap:anywhere}
+.whatsapp-movil{transition:opacity .2s,visibility .2s,transform .2s}
+.whatsapp-movil.oculta-por-pie{visibility:hidden;opacity:0;pointer-events:none;transform:translateY(12px)}
 .icono-listo svg{width:27px;height:27px}
 @media(max-width:1050px){.fila-cotizacion-resultados{grid-template-columns:minmax(0,1fr);max-width:760px}.seccion-cotizacion{grid-template-columns:minmax(0,1fr) 215px}.imagen-telefono-guia{width:270px;height:260px}.seccion-resultados .comparacion{height:180px}}
 @media(max-width:680px){.fila-cotizacion-resultados{width:calc(100% - 32px);gap:24px;margin:22px auto}.seccion-cotizacion{grid-template-columns:minmax(0,1fr) 145px;gap:4px;min-height:240px;padding:18px 12px;border-radius:12px}.guia-whatsapp .sobretitulo{font-size:8px}.guia-whatsapp h2{font-size:18px;max-width:18ch}.pasos-whatsapp{gap:2px;margin:12px 0 8px}.icono-paso{width:36px;height:36px}.numero-paso{left:calc(50% - 21px);width:16px;height:16px;font-size:8px}.paso-whatsapp p{font-size:8px}.separador-pasos{padding-top:10px;font-size:10px}.zona-servicio{font-size:8px!important}.boton-guia-whatsapp{min-height:34px;padding-inline:8px;font-size:8px}.imagen-telefono-guia{right:0;width:180px;height:190px;object-position:55% 50%}.seccion-resultados .encabezado-seccion{display:block}.seccion-resultados .encabezado-seccion h2{font-size:21px}.seccion-resultados .encabezado-seccion p{font-size:10px}.seccion-resultados .rejilla-resultados{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.seccion-resultados .comparacion{height:115px}}
@@ -1232,5 +1303,53 @@ textarea {
   .cotizar-servicio:hover,
   .boton-guia-whatsapp:hover {
     transform: none !important;
+  }
+}
+@media (max-width: 680px) {
+  .seccion-cotizacion {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .guia-whatsapp {
+    position: relative;
+    z-index: 1;
+  }
+  .pasos-whatsapp {
+    width: 100%;
+  }
+  .paso-whatsapp p {
+    font-size: 9px;
+  }
+  .imagen-telefono-guia {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    justify-self: end;
+    width: min(100%, 220px);
+    height: 175px;
+    margin-top: -12px;
+    object-position: center 48%;
+    border-radius: 10px;
+  }
+  .rejilla-ventajas .tarjeta-ventaja {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .rejilla-ventajas .tarjeta-ventaja > span {
+    flex: none;
+    margin-bottom: 9px;
+  }
+  .rejilla-ventajas .tarjeta-ventaja h3 {
+    margin: 0 0 5px;
+  }
+  .descripcion-visor-galeria {
+    margin-top: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .pie-sitio {
+    padding-bottom: 78px;
   }
 }

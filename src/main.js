@@ -13,6 +13,7 @@ const tituloVisorGaleria = document.querySelector("#titulo-visor-galeria");
 const contadorVisorGaleria = document.querySelector(".contador-visor-galeria");
 const imagenAmpliada = document.querySelector(".espacio-despues img");
 const avisoImagenPendiente = document.querySelector(".espacio-despues span");
+const descripcionVisorGaleria = document.querySelector(".descripcion-visor-galeria");
 const botonCerrarVisor = document.querySelector(".boton-cerrar-visor");
 const botonImagenAnterior = document.querySelector(".boton-anterior-galeria");
 const botonImagenSiguiente = document.querySelector(".boton-siguiente-galeria");
@@ -117,6 +118,7 @@ function actualizarVisorGaleria() {
   const imagenActual = imagenes[indiceImagenEnVisor];
   tituloVisorGaleria.textContent = servicioEnVisor;
   contadorVisorGaleria.textContent = `Imagen ${indiceImagenEnVisor + 1} de ${imagenes.length}`;
+  descripcionVisorGaleria.textContent = imagenActual.descripcion ?? "Esta comparación muestra el resultado del servicio en este espacio.";
   imagenAmpliada.hidden = !imagenActual.imagen;
   avisoImagenPendiente.hidden = Boolean(imagenActual.imagen);
 
@@ -161,6 +163,7 @@ function abrirVisorGaleria(servicio, imagenInicial, elementoActivador) {
       imagen: "",
       titulo: `Imagen ${imagenes.length + 1} pendiente`,
       textoAlternativo: `Comparación pendiente de ${servicio}`,
+      descripcion: "Pronto agregaremos una nueva comparación de este servicio.",
       servicio,
     });
   }
@@ -189,6 +192,22 @@ visorGaleria.addEventListener("keydown", (evento) => {
 visorGaleria.addEventListener("close", () => {
   if (elementoQueAbrioVisor?.isConnected) elementoQueAbrioVisor.focus();
 });
+
+const barraWhatsappMovil = document.querySelector(".whatsapp-movil");
+const pieSitio = document.querySelector(".pie-sitio");
+const portada = document.querySelector(".portada");
+if ("IntersectionObserver" in window && barraWhatsappMovil && portada) {
+  const observadorPortada = new IntersectionObserver(([entrada]) => {
+    barraWhatsappMovil.classList.toggle("visible-despues-portada", !entrada.isIntersecting);
+  });
+  observadorPortada.observe(portada);
+}
+if ("IntersectionObserver" in window && barraWhatsappMovil && pieSitio) {
+  const observadorPie = new IntersectionObserver(([entrada]) => {
+    barraWhatsappMovil.classList.toggle("oculta-por-pie", entrada.isIntersecting);
+  });
+  observadorPie.observe(pieSitio);
+}
 
 const escenarioVisorGaleria = document.querySelector(".escenario-visor-galeria");
 let posicionInicialDeslizamiento = null;
