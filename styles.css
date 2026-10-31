@@ -1095,3 +1095,142 @@ textarea {
   background: #0e5e6e;
   color: var(--amarillo);
 }
+
+/* Interacciones discretas para las tarjetas y los controles. */
+.icono-servicio svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icono-ubicacion {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #0e5e6e;
+  color: var(--amarillo);
+}
+.icono-ubicacion svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.boton,
+.cotizar-servicio,
+.cotizar-resultado,
+.boton-guia-whatsapp,
+.restablecer-resultados,
+.boton-ampliar-galeria,
+.boton-navegacion-galeria,
+.boton-cerrar-visor {
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+.boton:active,
+.cotizar-servicio:active,
+.boton-guia-whatsapp:active,
+.restablecer-resultados:active,
+.boton-ampliar-galeria:active,
+.boton-navegacion-galeria:active,
+.boton-cerrar-visor:active {
+  transform: translateY(1px) scale(0.98);
+}
+.boton:focus-visible,
+.cotizar-resultado:focus-visible,
+.restablecer-resultados:focus-visible,
+.whatsapp-movil:focus-visible {
+  outline: 3px solid var(--verde-azulado);
+  outline-offset: 3px;
+}
+.cotizar-resultado {
+  align-items: center;
+  width: fit-content;
+  gap: 8px;
+  padding: 7px 0;
+}
+.cotizar-resultado span {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+.tarjeta-servicio,
+.tarjeta-resultado,
+.tarjeta-ventaja {
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+.tarjeta-servicio .imagen-servicio {
+  transition: transform 320ms ease, filter 220ms ease;
+}
+.previsualizacion-resultado img {
+  transition: transform 320ms ease, filter 220ms ease;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tarjeta-servicio:hover,
+  .tarjeta-servicio:focus-within {
+    transform: translateY(-6px);
+    border-color: #b9ddd2;
+    box-shadow: 0 16px 32px #12383b1f;
+  }
+  .tarjeta-servicio:hover .imagen-servicio,
+  .tarjeta-servicio:focus-within .imagen-servicio {
+    transform: scale(1.045);
+    filter: saturate(1.06);
+  }
+  .tarjeta-resultado:hover,
+  .tarjeta-resultado:focus-within,
+  .tarjeta-ventaja:hover {
+    transform: translateY(-4px);
+    border-color: #c7e1d8;
+    box-shadow: 0 12px 26px #12383b18;
+  }
+  .tarjeta-resultado:hover .previsualizacion-resultado img,
+  .tarjeta-resultado:focus-within .previsualizacion-resultado img {
+    transform: scale(1.035);
+  }
+  .boton:hover,
+  .cotizar-servicio:hover,
+  .boton-guia-whatsapp:hover,
+  .restablecer-resultados:hover,
+  .boton-ampliar-galeria:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 16px #102f3a24;
+  }
+  .cotizar-resultado:hover span {
+    transform: translate(3px, -2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .tarjeta-servicio:hover,
+  .tarjeta-servicio:focus-within,
+  .tarjeta-resultado:hover,
+  .tarjeta-resultado:focus-within,
+  .tarjeta-ventaja:hover,
+  .boton:hover,
+  .cotizar-servicio:hover,
+  .boton-guia-whatsapp:hover {
+    transform: none !important;
+  }
+}
