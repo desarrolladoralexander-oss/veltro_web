@@ -1428,88 +1428,10 @@ textarea {
 .resaltado {
   color: var(--verde-azulado);
 }
-/* Guía WhatsApp con conversación nítida y marca VELTRO. */
-.seccion-cotizacion {
-  background: linear-gradient(135deg, #e5f5ee 0%, #d9eee6 100%);
-}
-.conversacion-veltro {
-  position: relative;
-  z-index: 2;
-  align-self: end;
-  justify-self: end;
-  width: min(100%, 230px);
-  overflow: hidden;
-  border: 5px solid #103b43;
-  border-bottom-width: 8px;
-  border-radius: 25px 25px 4px 4px;
-  background: #f7f5ef;
-  box-shadow: 0 14px 28px #07343b35;
-  transform: rotate(2deg);
-}
-.encabezado-conversacion {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 7px 10px;
-  background: #0b2a33;
-  color: #fff;
-}
-.avatar-veltro {
-  display: grid;
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  border: 1px solid var(--amarillo);
-  border-radius: 9px;
-  color: var(--amarillo);
-  font-weight: 800;
-}
-.encabezado-conversacion strong,
-.encabezado-conversacion small {
-  display: block;
-}
-.encabezado-conversacion strong { font-size: 11px; }
-.encabezado-conversacion small { color: #bed1d1; font-size: 8px; }
-.estado-en-linea {
-  margin-left: auto;
-  color: #72e0b0;
-  font-size: 8px;
-}
-.mensajes-conversacion {
-  display: grid;
-  gap: 10px;
-  min-height: 150px;
-  padding: 13px 9px 10px;
-  background-color: #f7f5ef;
-  background-image: radial-gradient(#0b2a330d .7px, transparent .7px);
-  background-size: 9px 9px;
-}
-.mensaje {
-  max-width: 94%;
-  margin: 0;
-  padding: 9px 10px;
-  border-radius: 10px;
-  color: #18363a;
-  font-size: 9px;
-  line-height: 1.45;
-}
-.mensaje-cliente {
-  justify-self: end;
-  background: #d8f2df;
-  border-top-right-radius: 3px;
-}
-.mensaje-veltro {
-  justify-self: start;
-  background: #fff;
-  border-top-left-radius: 3px;
-  box-shadow: 0 2px 6px #102f3a12;
-}
-.hora-conversacion {
-  justify-self: center;
-  color: #687b78;
-  font-size: 8px;
+/* Mejor legibilidad para la guía original de WhatsApp en alta resolución. */
+.imagen-telefono-guia {
+  image-rendering: auto;
+  filter: contrast(1.02) saturate(1.04);
 }
 .servicios,
 .seccion-resultados {
@@ -1525,12 +1447,6 @@ textarea {
   background: #fffefa;
 }
 @media(max-width:680px) {
-  .conversacion-veltro {
-    width: min(78%, 250px);
-    margin: 9px auto 3px;
-    justify-self: center;
-  }
-  .mensajes-conversacion { min-height: 125px; }
   .servicios {
     padding-right: 20px;
     padding-left: 20px;
